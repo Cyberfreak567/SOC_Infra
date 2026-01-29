@@ -13,7 +13,9 @@ const Signup = () => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const apiUrl = process.env.REACT_APP_API_URL || 
+      
+      'https://soc-infra.onrender.com';
       const res = await axios.post(`${apiUrl}/api/auth/signup`, formData);
       localStorage.setItem('token', res.data.token);
       navigate('/courses');
