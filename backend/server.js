@@ -8,14 +8,31 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// When deployed behind nginx on a VPS, trust proxy so express can
+// correctly detect client IP / protocol when behind a reverse proxy.
+app.set('trust proxy', 1);
+
+// Configure CORS. In production set FRONTEND_URL in backend .env
+// to your frontend origin (e.g. https://relearn.org.in). When
+// FRONTEND_URL is not set we allow common localhost dev origins.
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://localhost:5000'
+].filter(Boolean);
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5000',
-    process.env.FRONTEND_URL || 'http://localhost:3000'
-  ],
+  origin: function(origin, callback) {
+    // allow requests with no origin (mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+    // In production you can optionally allow all origins by setting ALLOW_ALL_ORIGINS=true
+    if (process.env.ALLOW_ALL_ORIGINS === 'true') return callback(null, true);
+    return callback(new Error('CORS policy: origin not allowed'), false);
+  },
   credentials: true
 }));
+
 app.use(express.json());
 
 // Connect to MongoDB
