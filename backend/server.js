@@ -17,8 +17,8 @@ app.set('trust proxy', 1);
 // FRONTEND_URL is not set we allow common localhost dev origins.
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'http://localhost:3000',
-  'http://localhost:5000'
+  'https://relearn.org.in', 
+  'https://soc-infra.onrender.com'
 ].filter(Boolean);
 
 app.use(cors({
