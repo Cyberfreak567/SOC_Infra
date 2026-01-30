@@ -1,56 +1,35 @@
 import React from 'react';
 
-const courses = [
-  {
-    id: 1,
-    title: 'React',
-    description: 'Build modern frontend apps using React, hooks and components.',
-    instructor: 'Relearn Team'
-  },
-  {
-    id: 2,
-    title: 'Cybersecurity',
-    description: 'Learn ethical hacking, SOC operations, and security defense.',
-    instructor: 'Relearn Team'
-  },
-  {
-    id: 3,
-    title: 'DevOps',
-    description: 'Master Docker, CI/CD, Kubernetes, Nginx and deployments.',
-    instructor: 'Relearn Team'
-  },
-  {
-    id: 4,
-    title: 'MongoDB',
-    description: 'Understand NoSQL, schema design, indexing and aggregation.',
-    instructor: 'Relearn Team'
-  }
-];
-
 const Courses = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Courses</h2>
 
       <div style={styles.grid}>
-        {courses.map(course => (
-          <div key={course.id} className="course-card" style={styles.card}>
-            <h3>{course.title}</h3>
-            <p>{course.description}</p>
-            <p style={{ opacity: 0.8 }}>Instructor: {course.instructor}</p>
-          </div>
-        ))}
-      </div>
+        <div style={styles.card}>
+          <h3>React</h3>
+          <p>Modern frontend development with components, hooks, and routing.</p>
+          <p><b>Instructor:</b> Relearn Team</p>
+        </div>
 
-      <style>{`
-        .course-card {
-          transition: all 0.3s ease;
-        }
-        .course-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-        }
-      `}</style>
+        <div style={styles.card}>
+          <h3>MongoDB</h3>
+          <p>NoSQL database, aggregation, indexing, and backend integration.</p>
+          <p><b>Instructor:</b> Relearn Team</p>
+        </div>
+
+        <div style={styles.card}>
+          <h3>Cybersecurity</h3>
+          <p>Ethical hacking, SOC, tools, attacks, and defense techniques.</p>
+          <p><b>Instructor:</b> Relearn Team</p>
+        </div>
+
+        <div style={styles.card}>
+          <h3>DevOps</h3>
+          <p>Docker, CI/CD, Nginx, Kubernetes, and production deployment.</p>
+          <p><b>Instructor:</b> Relearn Team</p>
+        </div>
+      </div>
     </div>
   );
 };
@@ -68,19 +47,20 @@ const styles = {
     marginBottom: '40px'
   },
   grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-    gap: '30px',
     maxWidth: '1100px',
-    margin: '0 auto'
+    margin: '0 auto',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '30px'
   },
   card: {
     background: 'rgba(255,255,255,0.15)',
     padding: '25px',
     borderRadius: '16px',
-    cursor: 'pointer'
+    transition: '0.3s'
   }
 };
 
 export default Courses;
+
 
