@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: relearn-backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "127.0.0.1:5000:5000"
+
+  frontend:
+    build: ./frontend
+    container_name: relearn-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
