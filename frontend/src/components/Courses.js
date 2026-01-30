@@ -4,25 +4,29 @@ const courses = [
   {
     id: 1,
     title: 'React',
-    description: 'Build modern, fast, and scalable frontend applications using React.',
+    description:
+      'Build modern, fast, and scalable frontend applications using React, hooks, and component-based architecture.',
     instructor: 'Relearn Team'
   },
   {
     id: 2,
-    title: 'MongoDB',
-    description: 'Learn NoSQL database design, queries, indexing, and real-world usage.',
+    title: 'Cybersecurity',
+    description:
+      'Learn ethical hacking, SOC operations, vulnerability analysis, and real-world cyber defense techniques.',
     instructor: 'Relearn Team'
   },
   {
     id: 3,
-    title: 'Cybersecurity',
-    description: 'Understand hacking techniques, defense strategies, SOC, and security tools.',
+    title: 'DevOps',
+    description:
+      'Master CI/CD pipelines, Docker, Kubernetes, Nginx, and production-grade deployments.',
     instructor: 'Relearn Team'
   },
   {
     id: 4,
-    title: 'DevOps',
-    description: 'Master CI/CD, Docker, Kubernetes, Nginx, and production deployments.',
+    title: 'MongoDB',
+    description:
+      'Understand NoSQL concepts, schema design, indexing, aggregation, and database optimization.',
     instructor: 'Relearn Team'
   }
 ];
@@ -34,11 +38,7 @@ const Courses = () => {
 
       <div style={styles.grid}>
         {courses.map(course => (
-          <div
-            key={course.id}
-            style={styles.card}
-            className="course-card"
-          >
+          <div key={course.id} className="course-card" style={styles.card}>
             <h3 style={styles.title}>{course.title}</h3>
             <p style={styles.description}>{course.description}</p>
             <p style={styles.instructor}>
@@ -48,14 +48,14 @@ const Courses = () => {
         ))}
       </div>
 
-      {/* Hover CSS */}
+      {/* Hover effect */}
       <style>{`
         .course-card {
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .course-card:hover {
           transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.35);
         }
       `}</style>
     </div>
@@ -76,7 +76,7 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
     gap: '30px',
     maxWidth: '1100px',
     margin: '0 auto'
