@@ -7,42 +7,34 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-// When deployed behind nginx on a VPS, trust proxy so express can
-// correctly detect client IP / protocol when behind a reverse proxy.
+/**
+ * Trust proxy (required for Cloudflare / reverse proxy)
+ */
 app.set('trust proxy', 1);
 
-// Configure CORS. In production set FRONTEND_URL in backend .env
-// to your frontend origin (e.g. https://relearn.org.in). When
-// FRONTEND_URL is not set we allow common localhost dev origins.
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'https://relearn.org.in', 
-  'https://soc-infra.onrender.com'
-].filter(Boolean);
-
+/**
+ * CORS configuration
+ * Since frontend and backend are served from the same domain
+ * (via Nginx/Docker reverse proxy), this is safe and stable.
+ */
 app.use(cors({
-  origin: function(origin, callback) {
-    // allow requests with no origin (mobile apps, curl, postman)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
-    // In production you can optionally allow all origins by setting ALLOW_ALL_ORIGINS=true
-    if (process.env.ALLOW_ALL_ORIGINS === 'true') return callback(null, true);
-    return callback(new Error('CORS policy: origin not allowed'), false);
-  },
+  origin: true,
   credentials: true
 }));
 
 app.use(express.json());
 
-// Connect to MongoDB
+/**
+ * MongoDB connection
+ */
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(async () => {
   console.log('MongoDB connected');
-  // Add sample courses if none exist
+
+  // Insert sample data once
   const Course = require('./models/Course');
   const count = await Course.countDocuments();
   if (count === 0) {
@@ -54,17 +46,28 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log('Sample courses added');
   }
 })
-.catch(err => console.log(err));
+.catch(err => {
+  console.error('MongoDB error:', err);
+});
 
-// Routes
+/**
+ * Routes
+ */
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/courses', require('./routes/courses'));
 
-// Error handling middleware
+/**
+ * Error handler
+ */
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(500).json({ message: 'Server error', error: err.message });
+  res.status(500).json({ message: 'Server error' });
 });
 
+/**
+ * IMPORTANT: listen on 0.0.0.0 for Docker
+ */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
